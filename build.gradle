@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'org.spongepowered.plugin' version '0.9.0'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+group = pluginGroup
+version = pluginVersion
+
+dependencies {
+    compile 'org.spongepowered:spongeapi:7.0.0'
+}
+
+sponge {
+    plugin {
+        id = pluginId
+        meta {
+            name = 'CustomMessage'
+            version = pluginVersion
+            description = null
+            url = null
+        }
+    }
+}
+
+repositories {
+    jcenter()
+}
