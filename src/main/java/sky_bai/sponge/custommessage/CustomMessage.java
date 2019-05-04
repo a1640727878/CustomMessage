@@ -10,7 +10,7 @@ import org.spongepowered.api.plugin.Plugin;
 @Plugin(id = "custommessage", name = "CustomMessage")
 public class CustomMessage {
 
-	public final static Logger logger = LoggerFactory.getLogger("BaiAttributes");;
+	public final static Logger logger = LoggerFactory.getLogger("CustomMessage");;
 
 	@Listener
 	public void onServerStart(GamePreInitializationEvent event) {

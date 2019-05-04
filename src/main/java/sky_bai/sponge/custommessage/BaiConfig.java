@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,8 +13,8 @@ import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 public class BaiConfig {
 	static Path CustomMessageConfigPath;
 	static Path configPath;
-	static Set<String> mesName = new HashSet<String>();
-	static Map<String, List<String>> mes = new HashMap<String, List<String>>();
+	static Set<String> CMCSet = new HashSet<>();
+	static Map<String, Map<String, Object>> CMConfig = new HashMap<>();
 	
 	protected static ConfigurationNode getConfig(Path path) {
 		try {
@@ -25,12 +24,19 @@ public class BaiConfig {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings("unchecked")
 	public static void setMessageSet() {
-		mesName.clear();
-		mesName.addAll(((HashMap<String,Object>)getConfig(configPath).getValue()).keySet());	
-		for (String mesNameString : mesName) {
-			mes.put(mesNameString, (List<String>)BaiConfig.getConfig(BaiConfig.configPath).getNode(mesNameString,"Contents").getValue());
+		CMCSet.clear();
+		CMConfig.clear();
+		CMCSet.addAll(((HashMap<String,Object>)getConfig(configPath).getValue()).keySet());
+		for (String CMC : CMCSet) {
+			Map<String, Object> a1 =  new HashMap<>();
+			ConfigurationNode a2 = getConfig(configPath).getNode(CMC);
+			a1.put("Title", a2.getNode("Title").getString(""));
+			a1.put("Padding", a2.getNode("Padding").getString("="));
+			a1.put("Page", a2.getNode("Page").getInt(0));
+			a1.put("Contents", a2.getNode("Contents").getValue());
+			CMConfig.put(CMC, a1);
 		}
 	}
 }

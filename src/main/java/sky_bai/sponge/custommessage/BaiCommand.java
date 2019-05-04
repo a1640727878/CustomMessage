@@ -1,8 +1,12 @@
 package sky_bai.sponge.custommessage;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
@@ -16,10 +20,9 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import ninja.leaping.configurate.ConfigurationNode;
-
 public class BaiCommand implements CommandCallable{
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public CommandResult process(CommandSource source, String arguments) throws CommandException {
 		if (arguments.startsWith("reload")) {
@@ -27,20 +30,20 @@ public class BaiCommand implements CommandCallable{
 			source.sendMessage(Text.of("§l[CustomMessage]§r插件重载完成"));
 			return CommandResult.success();
 		} else if (arguments.startsWith("send ")) {
-			String mesNameString = arguments.replace("send ", "");
-			if (!BaiConfig.mesName.contains(mesNameString)) {
+			String argmane = arguments.replace("send ", "");
+			if (!BaiConfig.CMCSet.contains(argmane)) {
 				return CommandResult.empty();
 			}
-			BaiConfig.mes.get(mesNameString);
-			ConfigurationNode a2 = BaiConfig.getConfig(BaiConfig.configPath).getNode(mesNameString);
-			PaginationList.Builder a1 = PaginationList.builder().title(Text.of(a2.getNode("Title").getValue())).linesPerPage(a2.getNode("Page").getInt(0)+2).padding(Text.of(a2.getNode("Padding").getValue()));
+			Map<String, Object> a1 = BaiConfig.CMConfig.get(argmane);
+			PaginationList.Builder a2  = PaginationList.builder().title(Text.of(a1.get("Title"))).linesPerPage((int) a1.get("Page") +2).padding(Text.of(a1.get("Padding")));
 			List<Text> texts = new ArrayList<Text>();
-			for (String s : BaiConfig.mes.get(mesNameString)) {
+			Set<String> a3 = new HashSet<>((Collection)a1.get("Contents"));
+			for (String s : a3) {
 				texts.add(TextSerializers.JSON.deserializeUnchecked(s));
 			}
-			a1.contents(texts).sendTo(source);
+			a2.contents(texts).sendTo(source);
 			return CommandResult.success();
-		} else if (arguments.startsWith("sendto ")) {
+		}else if (arguments.startsWith("sendto ")) {
 			String playername =  arguments.replace("sendto ", "").replaceFirst(" .*","");
 			Player player = null;
 			if (Sponge.getServer().getPlayer(playername).isPresent()) {
@@ -49,15 +52,15 @@ public class BaiCommand implements CommandCallable{
 			if (player == null) {
 				return CommandResult.empty();
 			}
-			String mesNameString = arguments.replace("sendto ", "").replace(playername+ " ","");
-			BaiConfig.mes.get(mesNameString);
-			ConfigurationNode a2 = BaiConfig.getConfig(BaiConfig.configPath).getNode(mesNameString);
-			PaginationList.Builder a1 = PaginationList.builder().title(Text.of(a2.getNode("Title").getValue())).linesPerPage(a2.getNode("Page").getInt(0)+2).padding(Text.of(a2.getNode("Padding").getValue()));
+			String argmane = arguments.replace("sendto ", "").replace(playername+ " ","");
+			Map<String, Object> a1 = BaiConfig.CMConfig.get(argmane);
+			PaginationList.Builder a2  = PaginationList.builder().title(Text.of(a1.get("Title"))).linesPerPage((int) a1.get("Page") +2).padding(Text.of(a1.get("Padding")));
 			List<Text> texts = new ArrayList<Text>();
-			for (String s : BaiConfig.mes.get(mesNameString)) {
+			Set<String> a3 = new HashSet<>((Collection)a1.get("Contents"));
+			for (String s : a3) {
 				texts.add(TextSerializers.JSON.deserializeUnchecked(s));
 			}
-			a1.contents(texts).sendTo(player);
+			a2.contents(texts).sendTo(source);
 			return CommandResult.success();
 		}
 		return CommandResult.empty();
@@ -75,11 +78,11 @@ public class BaiCommand implements CommandCallable{
 				argumentsList.add(player.getName());
 				if (arguments.contains("sendto "+player.getName())) {
 					argumentsList.clear();
-					argumentsList.addAll(BaiConfig.mesName);
+					argumentsList.addAll(BaiConfig.CMCSet);
 				}
 			}
 		} else if (arguments.contains("send ")) {
-			argumentsList.addAll(BaiConfig.mesName);
+			argumentsList.addAll(BaiConfig.CMCSet);
 		}
 		return argumentsList;
 	}
