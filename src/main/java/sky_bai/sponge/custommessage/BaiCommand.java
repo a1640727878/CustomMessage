@@ -1,13 +1,9 @@
 package sky_bai.sponge.custommessage;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandCallable;
 import org.spongepowered.api.command.CommandException;
@@ -22,7 +18,7 @@ import org.spongepowered.api.world.World;
 
 public class BaiCommand implements CommandCallable{
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	public CommandResult process(CommandSource source, String arguments) throws CommandException {
 		if (arguments.startsWith("reload")) {
@@ -37,7 +33,7 @@ public class BaiCommand implements CommandCallable{
 			Map<String, Object> a1 = BaiConfig.CMConfig.get(argmane);
 			PaginationList.Builder a2  = PaginationList.builder().title(Text.of(a1.get("Title"))).linesPerPage((int) a1.get("Page") +2).padding(Text.of(a1.get("Padding")));
 			List<Text> texts = new ArrayList<Text>();
-			Set<String> a3 = new HashSet<>((Collection)a1.get("Contents"));
+			List<String> a3 = (List<String>) a1.get("Contents");
 			for (String s : a3) {
 				texts.add(TextSerializers.JSON.deserializeUnchecked(s));
 			}
@@ -57,7 +53,7 @@ public class BaiCommand implements CommandCallable{
 			Map<String, Object> a1 = BaiConfig.CMConfig.get(argmane);
 			PaginationList.Builder a2  = PaginationList.builder().title(Text.of(a1.get("Title"))).linesPerPage((int) a1.get("Page") +2).padding(Text.of(a1.get("Padding")));
 			List<Text> texts = new ArrayList<Text>();
-			Set<String> a3 = new HashSet<>((Collection)a1.get("Contents"));
+			List<String> a3 = (List<String>) a1.get("Contents");
 			for (String s : a3) {
 				texts.add(TextSerializers.JSON.deserializeUnchecked(s));
 			}
