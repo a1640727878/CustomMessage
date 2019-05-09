@@ -50,6 +50,7 @@ public class BaiCommand implements CommandCallable{
 				player = Sponge.getServer().getPlayer(playername).get();
 			}
 			if (player == null) {
+				source.sendMessage(Text.of("§l[CustomMessage]§r玩家不存在或不在线"));
 				return CommandResult.empty();
 			}
 			String argmane = arguments.replace("sendto ", "").replace(playername+ " ","");
@@ -60,7 +61,7 @@ public class BaiCommand implements CommandCallable{
 			for (String s : a3) {
 				texts.add(TextSerializers.JSON.deserializeUnchecked(s));
 			}
-			a2.contents(texts).sendTo(source);
+			a2.contents(texts).sendTo(player);
 			return CommandResult.success();
 		}
 		return CommandResult.empty();
