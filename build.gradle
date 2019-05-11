@@ -9,14 +9,14 @@ group = pluginGroup
 version = pluginVersion
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:7.0.0'
+    compile 'org.spongepowered:spongeapi:7.1.0'
 }
 
 sponge {
     plugin {
         id = pluginId
         meta {
-            name = 'CustomMessage'
+            name = pluginName
             version = pluginVersion
             description = null
             url = null
