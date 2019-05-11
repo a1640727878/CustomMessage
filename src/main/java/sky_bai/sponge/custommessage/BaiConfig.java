@@ -28,7 +28,9 @@ public class BaiConfig {
 	public static void setMessageSet() {
 		CMCSet.clear();
 		CMConfig.clear();
-		CMCSet.addAll(((HashMap<String,Object>)getConfig(configPath).getValue()).keySet());
+		for (String string : ((HashMap<String,Object>)getConfig(configPath).getValue()).keySet()) {
+			CMCSet.add(string);
+		}
 		for (String CMC : CMCSet) {
 			Map<String, Object> a1 =  new HashMap<>();
 			ConfigurationNode a2 = getConfig(configPath).getNode(CMC);

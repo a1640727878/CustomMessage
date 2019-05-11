@@ -2,6 +2,7 @@ package sky_bai.sponge.custommessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.spongepowered.api.event.game.state.GameLoadCompleteEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.event.Listener;
@@ -15,6 +16,9 @@ public class CustomMessage {
 	@Listener
 	public void onServerStart(GamePreInitializationEvent event) {
 		logger.info("插件加载中....");
+	}
+	
+	public void loadConfig(GameLoadCompleteEvent event) {
 		this.setConfigPath();
 		this.setConfigFile();
 		CustomMessage.setConfig();
