@@ -18,6 +18,7 @@ public class CustomMessage {
 		logger.info("插件加载中....");
 	}
 	
+	@Listener
 	public void loadConfig(GameLoadCompleteEvent event) {
 		this.setConfigPath();
 		this.setConfigFile();
