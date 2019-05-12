@@ -16,7 +16,7 @@ public class CMObject {
     private String title = "";
     @Setting("Padding")
     private String padding = "=";
-    @Setting("Title")
+    @Setting("Page")
     private int page = 0;
     @Setting("Contents")
     private List<String> contents = Collections.emptyList();
